@@ -44,18 +44,6 @@ public class MovieController {
         }
     }
 
-    @GetMapping("/getByReview/{review}")
-    public ResponseEntity<Optional<Movie>> getMovieByReview(@PathVariable("review") double review) {
-        try {
-            return new ResponseEntity<>(movieService.getByReview(review), HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
     @GetMapping("/getByName/{name}")
     public ResponseEntity<Optional<Movie>> getMovieByName(@PathVariable("name") String name) {
         try {
@@ -85,16 +73,6 @@ public class MovieController {
         if (movieService.isMovieValid(movie)){
             return new ResponseEntity<>(movieService.addMovie(movie), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    @PutMapping("/updateReview/{id}/{value}")
-    public ResponseEntity<Movie> updateReview(@PathVariable ObjectId id, @PathVariable double value) {
-        if (movieService.updateReview(id, value) != null){
-            return new ResponseEntity<>(movieService.updateReview(id, value), HttpStatus.OK);
-        }
-        else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
     }

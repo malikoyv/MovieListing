@@ -15,12 +15,14 @@ User Roles and Permissions:
 Create a Review Model:
 
 - Define a model to store movies --> DONE
-- Define a model to store user reviews, including fields for rating, comment, user ID, and movie ID.
-- Establish a relationship between movies and reviews.
+- Define User model --> DONE
+- Define Review model --> DONE
+- Define a model to store user reviews, including fields for comment, user ID, and movie ID. --> DONE
+- Establish a relationship between movies and reviews. --> DONE
 
 CRUD Operations for Reviews:
-- Implement endpoint for movies to add, get all, get by id, get by review, post, update a review, get by title, get by director, delete movie by id --> DONE
-- Implement endpoints for users to add, update, and delete their reviews.
+- Implement endpoint for movies to add, get all, get by id, get by review, post, get by title, get by director, delete movie by id --> DONE
+- Implement endpoints for Reviews to add, update, and delete. --> DONE
 - Allow users to rate movies and ensure ratings are aggregated for each movie.
 
 3. Search and Filter Movies

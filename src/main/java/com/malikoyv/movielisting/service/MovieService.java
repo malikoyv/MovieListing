@@ -26,10 +26,6 @@ public class MovieService {
         return movieRepository.findById(id.toString());
     }
 
-    public Optional<Movie> getByReview(double review) {
-        return movieRepository.findByReview(review);
-    }
-
     public Optional<Movie> getByName(String name) {
         return movieRepository.findByName(name);
     }
@@ -46,19 +42,7 @@ public class MovieService {
         return !movie.getName().isEmpty() &&
                 !movie.getDirector().isEmpty() &&
                 movie.getYear() > 1895 && movie.getYear() < LocalDate.now().getYear() &&
-                movie.getReview() > 0 && movie.getReview() < 10 &&
                 !movie.getGenre().isEmpty();
-    }
-
-    public Movie updateReview (ObjectId id, double value) {
-        Optional<Movie> movie = movieRepository.findById(id.toString());
-        if (value > 0 && value < 10) {
-            if (movie.isPresent()) {
-                movie.get().setReview(value);
-                return movieRepository.save(movie.get());
-            }
-        }
-        return null;
     }
 
     public ResponseEntity<Movie> deleteMovie(ObjectId id) {
