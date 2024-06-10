@@ -4,9 +4,6 @@ import com.malikoyv.movielisting.model.Movie;
 import com.malikoyv.movielisting.repos.MovieRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.scheduling.support.SimpleTriggerContext;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -35,23 +32,24 @@ public class MovieService {
     }
 
     public Movie addMovie(Movie movie) {
-        return movieRepository.save(movie);
+        if (isMovieValid(movie)){
+            return movieRepository.save(movie);
+        }
+        return null;
     }
 
-    public boolean isMovieValid(Movie movie) {
+    private boolean isMovieValid(Movie movie) {
         return !movie.getName().isEmpty() &&
                 !movie.getDirector().isEmpty() &&
                 movie.getYear() > 1895 && movie.getYear() < LocalDate.now().getYear() &&
                 !movie.getGenre().isEmpty();
     }
 
-    public ResponseEntity<Movie> deleteMovie(ObjectId id) {
+    public boolean deleteMovie(ObjectId id) {
         if (movieRepository.existsById(id.toString())) {
             movieRepository.deleteById(id.toString());
-            return new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return true;
         }
-
+        return false;
     }
 }

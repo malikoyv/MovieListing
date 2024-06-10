@@ -4,14 +4,8 @@ import com.malikoyv.movielisting.model.User;
 import com.malikoyv.movielisting.repos.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-    import org.springframework.web.bind.annotation.PathVariable;
 
-import java.beans.Encoder;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
@@ -24,24 +18,14 @@ public class UserService {
     private UserRepository userRepository;
 
     public List<User> getAllUsers() {
-        List<User> users = userRepository.findAll();
-        if (!users.isEmpty()) {
-            return users;
-        }
-        return null;
+        return userRepository.findAll();
     }
 
     public Optional<User> getUserById(ObjectId id) {
-        if (userRepository.findById(id.toString()).isEmpty()) {
-            return Optional.empty();
-        }
         return userRepository.findById(id.toString());
     }
 
     public Optional<User> getUserByUsername(String username) {
-        if (userRepository.findByUsername(username).isEmpty()) {
-            return Optional.empty();
-        }
         return userRepository.findByUsername(username);
     }
 
@@ -54,32 +38,26 @@ public class UserService {
     }
 
     public User updateUsername(ObjectId id, String username) {
-        if (!isUsernameValid(id, username)){
-            return null;
-        }
         Optional<User> user = userRepository.findById(id.toString());
-        if (user.isEmpty()){
+        if (!isUsernameValid(id, username) || user.isEmpty()){
             return null;
         }
-
+        user.get().setUsername(username);
         return userRepository.save(user.get());
     }
 
-    public ResponseEntity<User> deleteUser(ObjectId id){
-        if (userRepository.findById(id.toString()).isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public boolean deleteUser(ObjectId id){
+        if (userRepository.existsById(id.toString())) {
+            userRepository.deleteById(id.toString());
+            return true;
         }
-        userRepository.deleteById(id.toString());
-        return new ResponseEntity<>(HttpStatus.OK);
+        return false;
     }
 
     private boolean isUsernameValid(ObjectId id, String username) {
         Optional<User> existingUser = userRepository.findByUsername(username);
-        if (existingUser.isPresent() && !existingUser.get().get_id().equals(id)) {
-            // If a user with the new username already exists and it's not the current user
-            return false;
-        }
-        return true;
+        // If a user with the new username already exists, and it's not the current user
+        return existingUser.isEmpty() || existingUser.get().get_id().equals(id);
     }
 
     private boolean isUserValid(User user) {

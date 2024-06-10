@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @RequestMapping("/movies")
@@ -20,58 +19,39 @@ public class MovieController {
 
     @GetMapping("/getAll")
     public ResponseEntity<List<Movie>> getAllMovies() {
-        try {
-            return new ResponseEntity<>(movieService.getAll(), HttpStatus.OK);
-
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        List<Movie> movies = movieService.getAll();
+        if (!movies.isEmpty()) {
+            return new ResponseEntity<>(movies, HttpStatus.OK);
         }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/getById/{id}")
-    public ResponseEntity<Optional<Movie>> getMovieByID(@PathVariable("id") ObjectId id) {
-        try {
-            return new ResponseEntity<>(movieService.getById(id), HttpStatus.OK);
-
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<Movie> getMovieByID(@PathVariable("id") ObjectId id) {
+        Optional<Movie> movie = movieService.getById(id);
+        return movie.map(v -> new ResponseEntity<>(v, HttpStatus.OK)).
+                orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/getByName/{name}")
-    public ResponseEntity<Optional<Movie>> getMovieByName(@PathVariable("name") String name) {
-        try {
-            return new ResponseEntity<>(movieService.getByName(name), HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<Movie> getMovieByName(@PathVariable("name") String name) {
+        Optional<Movie> movie = movieService.getByName(name);
+        return movie.map(v -> new ResponseEntity<>(v, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/getByDirector/{director}")
-    public ResponseEntity<Optional<Movie>> getMovieByDirector(@PathVariable("director") String director) {
-        try {
-            return new ResponseEntity<>(movieService.getByDirector(director), HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+    public ResponseEntity<Movie> getMovieByDirector(@PathVariable("director") String director) {
+        Optional<Movie> movie = movieService.getByDirector(director);
+        return movie.map(v -> new ResponseEntity<>(v, HttpStatus.OK))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/addMovie")
     public ResponseEntity<Movie> addMovie(@RequestBody Movie movie) {
-        if (movieService.isMovieValid(movie)){
-            return new ResponseEntity<>(movieService.addMovie(movie), HttpStatus.OK);
+        Movie newMovie = movieService.addMovie(movie);
+        if (newMovie != null){
+            return new ResponseEntity<>(newMovie, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -79,6 +59,10 @@ public class MovieController {
 
     @DeleteMapping("/deleteMovie/{id}")
     public ResponseEntity<Movie> deleteMovie(@PathVariable ObjectId id) {
-        return movieService.deleteMovie(id);
+        boolean isDeleted = movieService.deleteMovie(id);
+        if (isDeleted) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

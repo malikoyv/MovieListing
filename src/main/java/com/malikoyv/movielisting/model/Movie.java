@@ -10,7 +10,6 @@ import java.util.List;
 @Setter
 @Getter
 @NoArgsConstructor
-@ToString
 @Document(collection = "movies")
 public class Movie {
     @Id

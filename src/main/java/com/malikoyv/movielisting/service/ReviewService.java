@@ -6,8 +6,6 @@ import com.malikoyv.movielisting.repos.ReviewRepository;
 import com.malikoyv.movielisting.repos.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,22 +26,15 @@ public class ReviewService {
                 && review.getRating() > 0 && review.getRating() <= 10 && existingReview.isEmpty()){
             return reviewRepository.save(review);
         }
-
         return null;
     }
 
     public Optional<List<Review>> getByMovieId(ObjectId movieId) {
-        if (movieRepository.existsById(movieId.toString())){
-            return reviewRepository.findByMovieId(movieId);
-        }
-        return Optional.empty();
+        return reviewRepository.findByMovieId(movieId);
     }
 
     public Optional<List<Review>> getByAuthorId(ObjectId authorId) {
-        if (userRepository.findById(authorId.toString()).isPresent()){
-            return reviewRepository.findByAuthorId(authorId);
-        }
-        return Optional.empty();
+        return reviewRepository.findByAuthorId(authorId);
     }
 
     public Review updateReview(ObjectId id, String description) {
@@ -55,11 +46,11 @@ public class ReviewService {
         return null;
     }
 
-    public ResponseEntity<HttpStatus> deleteReview(ObjectId id){
+    public boolean deleteReview(ObjectId id){
         if (reviewRepository.existsById(id.toString())){
             reviewRepository.deleteById(id.toString());
-            return new ResponseEntity<>(HttpStatus.OK);
+            return true;
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return false;
     }
 }

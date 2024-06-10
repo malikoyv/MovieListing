@@ -8,12 +8,9 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.List;
-
 @Setter
 @Getter
 @NoArgsConstructor
-@ToString
 @Document(collection = "reviews")
 public class Review {
     @Id

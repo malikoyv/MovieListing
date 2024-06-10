@@ -19,46 +19,50 @@ public class UserController {
 
     @GetMapping("/getAll")
     public ResponseEntity<List<User>> getAll() {
-        if (userService.getAllUsers() == null){
+        List<User> users = userService.getAllUsers();
+        if (users.isEmpty()){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(userService.getAllUsers(), HttpStatus.OK);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     @GetMapping("/getById/{id}")
-    public ResponseEntity<Optional<User>> getById(@PathVariable ObjectId id) {
-        if (userService.getUserById(id).isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(userService.getUserById(id), HttpStatus.OK);
+    public ResponseEntity<User> getById(@PathVariable ObjectId id) {
+        Optional<User> user = userService.getUserById(id);
+        return user.map(v -> new ResponseEntity<>(v, HttpStatus.FOUND))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @GetMapping("/getByUsername/{username}")
-    public ResponseEntity<Optional<User>> getByUsername(@PathVariable String username) {
-        if (userService.getUserByUsername(username).isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(userService.getUserByUsername(username), HttpStatus.OK);
+    public ResponseEntity<User> getByUsername(@PathVariable String username) {
+        Optional<User> user = userService.getUserByUsername(username);
+        return user.map(v -> new ResponseEntity<>(v, HttpStatus.FOUND))
+                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @PostMapping("/addUser")
     public ResponseEntity<User> addUser(@RequestBody User user) {
-        if (userService.addUser(user) == null){
+        User user1 = userService.addUser(user);
+        if (user1 == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(userService.addUser(user), HttpStatus.CREATED);
+        return new ResponseEntity<>(user1, HttpStatus.CREATED);
     }
 
     @PutMapping("/updateUsername/{id}/{value}")
     public ResponseEntity<User> updateUsername(@PathVariable("id") ObjectId id, @PathVariable("value") String username) {
-        if (userService.updateUsername(id, username) == null){
+        User updated = userService.updateUsername(id, username);
+        if (updated == null){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(userService.updateUsername(id, username), HttpStatus.OK);
+        return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
     @DeleteMapping("/deleteUser/{id}")
     public ResponseEntity<User> deleteUser(@PathVariable ObjectId id) {
-        return userService.deleteUser(id);
+        if (userService.deleteUser(id)){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

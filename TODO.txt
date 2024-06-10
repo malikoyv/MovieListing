@@ -23,14 +23,12 @@ Create a Review Model:
 CRUD Operations for Reviews:
 - Implement endpoint for movies to add, get all, get by id, get by review, post, get by title, get by director, delete movie by id --> DONE
 - Implement endpoints for Reviews to add, update, and delete. --> DONE
-- Allow users to rate movies and ensure ratings are aggregated for each movie.
+- Allow users to rate movies
 
-3. Search and Filter Movies
+3. Search Movies
 Implement Search Functionality:
 
-- Create a search endpoint to find movies based on various criteria (e.g., name, director, genre).
-Filter Movies:
-- Add filtering options to the front-end to allow users to filter movies by genre, rating, and release year.
+- Create a search endpoint to find movies based on various criteria (e.g., name, director, genre).-->DONE
 
 4. Additional Features
 Movie Watchlist:
