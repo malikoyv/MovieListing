@@ -2,20 +2,20 @@ package com.malikoyv.movielisting.service;
 
 import com.malikoyv.movielisting.model.User;
 import com.malikoyv.movielisting.repos.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@RequiredArgsConstructor
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -31,7 +31,7 @@ public class UserService {
 
     public User addUser(User user) {
         if (isUserValid(user) && isUsernameValid(user.get_id(), user.getUsername())) {
-            user.setPassword(hashPassword(user.getPassword()));
+            user.setPassword(user.getPassword());
             return userRepository.save(user);
         }
         return null;
@@ -69,15 +69,5 @@ public class UserService {
         Pattern p = Pattern.compile(ePattern);
         Matcher m = p.matcher(email);
         return m.matches();
-    }
-
-    private String hashPassword(String password) {
-        Base64.Encoder encoder = Base64.getEncoder();
-        return encoder.encodeToString(password.getBytes());
-    }
-
-    private String decodePassword(String password) {
-        Base64.Decoder decoder = Base64.getDecoder();
-        return decoder.decode(password).toString();
     }
 }

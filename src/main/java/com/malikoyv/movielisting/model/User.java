@@ -17,6 +17,8 @@ import java.util.stream.Collectors;
 @Setter
 @Getter
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 @Document(collection = "users")
 public class User implements UserDetails {
     @Id
@@ -24,7 +26,6 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
-    @DBRef
     private Set<Role> roles = new HashSet<>();
 
     @Override
