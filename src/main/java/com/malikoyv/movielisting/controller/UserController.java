@@ -6,6 +6,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class UserController {
     }
 
     @GetMapping("/getById/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<User> getById(@PathVariable ObjectId id) {
         Optional<User> user = userService.getUserById(id);
         return user.map(v -> new ResponseEntity<>(v, HttpStatus.FOUND))
@@ -34,6 +36,7 @@ public class UserController {
     }
 
     @GetMapping("/getByUsername/{username}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<User> getByUsername(@PathVariable String username) {
         Optional<User> user = userService.getUserByUsername(username);
         return user.map(v -> new ResponseEntity<>(v, HttpStatus.FOUND))
@@ -41,6 +44,7 @@ public class UserController {
     }
 
     @PostMapping("/addUser")
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public ResponseEntity<User> addUser(@RequestBody User user) {
         User user1 = userService.addUser(user);
         if (user1 == null) {
@@ -50,6 +54,7 @@ public class UserController {
     }
 
     @PutMapping("/updateUsername/{id}/{value}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<User> updateUsername(@PathVariable("id") ObjectId id, @PathVariable("value") String username) {
         User updated = userService.updateUsername(id, username);
         if (updated == null){
@@ -59,6 +64,7 @@ public class UserController {
     }
 
     @DeleteMapping("/deleteUser/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<User> deleteUser(@PathVariable ObjectId id) {
         if (userService.deleteUser(id)){
             return new ResponseEntity<>(HttpStatus.OK);

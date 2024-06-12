@@ -4,7 +4,6 @@ import com.malikoyv.movielisting.model.User;
 import com.malikoyv.movielisting.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,8 +59,11 @@ public class UserService {
         return existingUser.isEmpty() || existingUser.get().get_id().equals(id);
     }
 
-    private boolean isUserValid(User user) {
-        return !user.getUsername().isEmpty() && isEmailValid(user.getEmail());
+    public boolean isUserValid(User user) {
+        boolean uniqueUsername = userRepository.findByUsername(user.getUsername()).isEmpty();
+        return !user.getUsername().isEmpty()
+                && isEmailValid(user.getEmail())
+                && uniqueUsername && user.getPassword().length() > 5;
     }
 
     private boolean isEmailValid(String email) {

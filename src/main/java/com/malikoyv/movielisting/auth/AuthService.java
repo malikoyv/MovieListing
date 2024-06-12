@@ -5,6 +5,7 @@ import com.malikoyv.movielisting.model.ERole;
 import com.malikoyv.movielisting.model.Role;
 import com.malikoyv.movielisting.model.User;
 import com.malikoyv.movielisting.repos.UserRepository;
+import com.malikoyv.movielisting.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +21,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
+    private final UserService userService;
 
     public AuthenticationResponse register(RegisterRequest request) {
         User user = User.builder()
@@ -28,9 +30,12 @@ public class AuthService {
                 .password(passwordEncoder.encode(request.getPassword()))
                 .roles(Set.of(new Role(ERole.USER)))
                 .build();
-        userRepository.save(user);
-        String token = jwtService.generateToken(user);
-        return AuthenticationResponse.builder().token(token).build();
+        if (userService.isUserValid(user)){
+            userRepository.save(user);
+            String token = jwtService.generateToken(user);
+            return AuthenticationResponse.builder().token(token).build();
+        }
+        return AuthenticationResponse.builder().token("invalid_data").build();
     }
 
     public AuthenticationResponse authenticate(AuthenticationRequest request) {

@@ -6,6 +6,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -27,6 +28,7 @@ public class MovieController {
     }
 
     @GetMapping("/getById/{id}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<Movie> getMovieByID(@PathVariable("id") ObjectId id) {
         Optional<Movie> movie = movieService.getById(id);
         return movie.map(v -> new ResponseEntity<>(v, HttpStatus.OK)).
@@ -34,6 +36,7 @@ public class MovieController {
     }
 
     @GetMapping("/getByName/{name}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<Movie> getMovieByName(@PathVariable("name") String name) {
         Optional<Movie> movie = movieService.getByName(name);
         return movie.map(v -> new ResponseEntity<>(v, HttpStatus.OK))
@@ -41,6 +44,7 @@ public class MovieController {
     }
 
     @GetMapping("/getByDirector/{director}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<Movie> getMovieByDirector(@PathVariable("director") String director) {
         Optional<Movie> movie = movieService.getByDirector(director);
         return movie.map(v -> new ResponseEntity<>(v, HttpStatus.OK))
@@ -48,6 +52,7 @@ public class MovieController {
     }
 
     @PostMapping("/addMovie")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Movie> addMovie(@RequestBody Movie movie) {
         Movie newMovie = movieService.addMovie(movie);
         if (newMovie != null){
@@ -58,6 +63,7 @@ public class MovieController {
     }
 
     @DeleteMapping("/deleteMovie/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Movie> deleteMovie(@PathVariable ObjectId id) {
         boolean isDeleted = movieService.deleteMovie(id);
         if (isDeleted) {

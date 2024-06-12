@@ -1,5 +1,6 @@
 package com.malikoyv.movielisting.service;
 
+import com.malikoyv.movielisting.controller.WatchlistController;
 import com.malikoyv.movielisting.model.Movie;
 import com.malikoyv.movielisting.model.Watchlist;
 import com.malikoyv.movielisting.repos.MovieRepository;
@@ -8,8 +9,10 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class WatchlistService {
@@ -18,17 +21,36 @@ public class WatchlistService {
     @Autowired
     private MovieRepository movieRepository;
 
+    public Watchlist createWatchlist(Watchlist watchlist) {
+        return watchlistRepository.save(watchlist);
+    }
+
     public List<Watchlist> getAllWatchlists() {
         return watchlistRepository.findAll();
     }
 
-    public Optional<Movie> getMovie (ObjectId watchlistId) {
+    public Set<Optional<Movie>> getMovies (ObjectId watchlistId) {
         Optional<Watchlist> watchlist = watchlistRepository.findById(watchlistId.toString());
-        return movieRepository.findById(String.valueOf(watchlist.get().getMovieId()));
+        Set<Optional<Movie>> result = new HashSet<>();
+        if (watchlist.isPresent()) {
+            for (ObjectId m : watchlist.get().getMovieId()) {
+                result.add(movieRepository.findById(m.toString()));
+            }
+            return result;
+        }
+        return result;
     }
 
-    public Watchlist addToWatchlist(Watchlist watchlist) {
-        return watchlistRepository.save(watchlist);
+    public Watchlist addMovieToWatchlist(ObjectId movieId, ObjectId watchlistId) {
+        Optional<Watchlist> watchlist = watchlistRepository.findById(watchlistId.toString());
+        if (watchlist.isPresent()) {
+            Optional<Movie> movie = movieRepository.findById(movieId.toString());
+            if (movie.isPresent()) {
+                watchlist.get().getMovieId().add(movieId);
+                return watchlistRepository.save(watchlist.get());
+            }
+        }
+        return null;
     }
 
     public boolean deleteMovie(ObjectId id) {
