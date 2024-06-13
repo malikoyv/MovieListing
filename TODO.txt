@@ -4,12 +4,12 @@ Movie Listing and Management System application
 Implement User Authentication:
 
 - Set up Spring Security to handle user login and registration. --> DONE
-- Implement JWT (JSON Web Token) for stateless authentication.
-- Create endpoints for user registration, login, and logout.
+- Implement JWT (JSON Web Token) for stateless authentication. --> DONE
+- Create endpoints for user registration, login, and logout. --> DONE
 User Roles and Permissions:
 
-- Define roles such as Admin and User.
-- Ensure that only authorized users can perform certain actions (e.g., only Admin can add, update, or delete movies).
+- Define roles such as Admin and User. --> DONE
+- Ensure that only authorized users can perform certain actions (e.g., only Admin can add, update, or delete movies). --> DONE
 
 2. Movie Reviews and Ratings
 Create a Review Model:
@@ -41,7 +41,7 @@ Recommendations:
 - Implement a recommendation system to suggest movies to users based on their watch history and ratings.
 
 Admin Dashboard (API):
-- Create endpoints to provide admin functionalities for managing movies, reviews, and users.
+- Create endpoints to provide admin functionalities for managing movies, reviews, and users. --> DONE
 
 6. Testing and Deployment
 Unit and Integration Testing:
