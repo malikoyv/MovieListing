@@ -53,4 +53,18 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public User(ObjectId _id) {
+        this._id = _id;
+    }
+
+    public User(String username){
+        this.username = username;
+    }
+
+    public User(ObjectId id, String username){
+        this._id = id;
+        this.username = username;
+    }
+
 }

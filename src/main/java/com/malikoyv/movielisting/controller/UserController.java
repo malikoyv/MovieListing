@@ -2,6 +2,7 @@ package com.malikoyv.movielisting.controller;
 
 import com.malikoyv.movielisting.model.User;
 import com.malikoyv.movielisting.service.UserService;
+import lombok.RequiredArgsConstructor;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,7 +32,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<User> getById(@PathVariable ObjectId id) {
         Optional<User> user = userService.getUserById(id);
-        return user.map(v -> new ResponseEntity<>(v, HttpStatus.FOUND))
+        return user.map(v -> new ResponseEntity<>(v, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -39,7 +40,7 @@ public class UserController {
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<User> getByUsername(@PathVariable String username) {
         Optional<User> user = userService.getUserByUsername(username);
-        return user.map(v -> new ResponseEntity<>(v, HttpStatus.FOUND))
+        return user.map(v -> new ResponseEntity<>(v, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -63,9 +64,19 @@ public class UserController {
         return new ResponseEntity<>(updated, HttpStatus.OK);
     }
 
+    @PutMapping("/updatePassword/{id}/{value}")
+    @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
+    public ResponseEntity<User> updatePassword(@PathVariable("id") ObjectId id, @PathVariable("value") String password) {
+        User updated = userService.updatePassword(id, password);
+        if (updated == null){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(updated, HttpStatus.OK);
+    }
+
     @DeleteMapping("/deleteUser/{id}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<User> deleteUser(@PathVariable ObjectId id) {
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable ObjectId id) {
         if (userService.deleteUser(id)){
             return new ResponseEntity<>(HttpStatus.OK);
         }

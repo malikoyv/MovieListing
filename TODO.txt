@@ -38,7 +38,7 @@ Movie Watchlist:
 
 Recommendations:
 
-- Implement a recommendation system to suggest movies to users based on their watch history and ratings.
+- Implement a recommendation system to suggest movies to users based on their watch history and ratings. --> DONE
 
 Admin Dashboard (API):
 - Create endpoints to provide admin functionalities for managing movies, reviews, and users. --> DONE

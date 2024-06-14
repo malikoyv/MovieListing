@@ -21,15 +21,17 @@ public class UserService {
     }
 
     public Optional<User> getUserById(ObjectId id) {
+
         return userRepository.findById(id.toString());
     }
 
     public Optional<User> getUserByUsername(String username) {
+
         return userRepository.findByUsername(username);
     }
 
     public User addUser(User user) {
-        if (isUserValid(user) && isUsernameValid(user.get_id(), user.getUsername())) {
+        if (isUserValid(user)) {
             user.setPassword(user.getPassword());
             return userRepository.save(user);
         }
@@ -42,6 +44,15 @@ public class UserService {
             return null;
         }
         user.get().setUsername(username);
+        return userRepository.save(user.get());
+    }
+
+    public User updatePassword(ObjectId id, String password) {
+        Optional<User> user = userRepository.findById(id.toString());
+        if (user.isEmpty() || user.get().getPassword().equals(password) || password.length() < 6){
+            return null;
+        }
+        user.get().setPassword(password);
         return userRepository.save(user.get());
     }
 
