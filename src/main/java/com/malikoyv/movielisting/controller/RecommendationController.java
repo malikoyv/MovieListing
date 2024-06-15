@@ -19,6 +19,9 @@ public class RecommendationController {
     @GetMapping("/getRecommendation/{userId}")
     public ResponseEntity<List<Movie>> getRecommendations(@PathVariable("userId") ObjectId id) {
         List<Movie> recommendations = recommendationService.recommendMovies(id);
+        if (recommendations.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
         return new ResponseEntity<>(recommendations, HttpStatus.OK);
     }
 }
