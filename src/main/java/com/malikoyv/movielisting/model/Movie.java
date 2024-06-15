@@ -20,4 +20,13 @@ public class Movie {
     @DocumentReference
     private List<Review> reviewIds;
     private List<String> genre;
+
+    public Movie(ObjectId _id, String name){
+        this._id = _id;
+        this.name = name;
+    }
+
+    public Movie(String director){
+        this.director = director;
+    }
 }

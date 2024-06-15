@@ -22,7 +22,7 @@
         @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
         public ResponseEntity<List<Review>> getByMovie(@PathVariable("id") ObjectId movieId) {
             Optional<List<Review>> reviews = reviewService.getByMovieId(movieId);
-            return reviews.map(v -> new ResponseEntity<>(v, HttpStatus.FOUND))
+            return reviews.map(v -> new ResponseEntity<>(v, HttpStatus.OK))
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         }
 
@@ -30,7 +30,7 @@
         @PreAuthorize("hasRole('ADMIN')")
         public ResponseEntity<List<Review>> getByAuthor(@PathVariable("id") ObjectId authorId) {
             Optional<List<Review>> reviews = reviewService.getByAuthorId(authorId);
-            return reviews.map(v -> new ResponseEntity<>(v, HttpStatus.FOUND))
+            return reviews.map(v -> new ResponseEntity<>(v, HttpStatus.OK))
                     .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
         }
 

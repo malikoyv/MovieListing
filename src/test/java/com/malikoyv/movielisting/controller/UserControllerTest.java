@@ -4,13 +4,11 @@ import com.malikoyv.movielisting.config.JwtService;
 import com.malikoyv.movielisting.model.ERole;
 import com.malikoyv.movielisting.model.Role;
 import com.malikoyv.movielisting.model.User;
-import com.malikoyv.movielisting.repos.UserRepository;
 import com.malikoyv.movielisting.service.UserService;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -18,7 +16,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
