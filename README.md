@@ -6,12 +6,14 @@ This is a Movie Listing Application built using Spring Boot, MongoDB, Spring Sec
 - CRUD operations for movies, reviews, recommendations, watch history, and watchlists
 - Role-based access control
 - User profile management
+- Unit testing for controllers and services
 ## Technologies
 - Spring Boot
 - MongoDB
 - Spring Security
 - JWT
 - Maven
+- Mockito
 ## Prerequisites
 Java 11 or higher
 Maven 3.6.0 or higher
@@ -40,6 +42,7 @@ mvn spring-boot:run
 The application will start running at http://localhost:8080.
 
 ## API Endpoints
+Send API request using Postman
 ### Authentication
 #### Register
 <img src="https://github.com/malikoyv/MovieListing/assets/124885789/0214ab65-f074-4f2d-82fb-f28901bf992a" height=200px>
