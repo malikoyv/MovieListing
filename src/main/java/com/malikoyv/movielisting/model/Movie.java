@@ -17,8 +17,7 @@ public class Movie {
     private String name;
     private String director;
     private int year;
-    @DocumentReference
-    private List<Review> reviewIds;
+    private List<ObjectId> reviewIds;
     private List<String> genre;
 
     public Movie(ObjectId _id, String name){

@@ -25,6 +25,7 @@ public class Review {
 
     public Review(ObjectId authorId, double rating){
         this.authorId = authorId;
+        this.rating = rating;
     }
 
     public Review(ObjectId id, String description) {

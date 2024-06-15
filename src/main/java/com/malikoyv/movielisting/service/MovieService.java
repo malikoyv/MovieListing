@@ -45,6 +45,22 @@ public class MovieService {
                 !movie.getGenre().isEmpty();
     }
 
+    public void updateMovie(ObjectId id, Movie movie) {
+        Optional<Movie> movieToUpdate = movieRepository.findById(id.toString());
+        if (movieToUpdate.isPresent()){
+            if (movie.getName() != null){
+                movieToUpdate.get().setName(movie.getName());
+            } else if (movie.getDirector() != null){
+                movieToUpdate.get().setDirector(movie.getDirector());
+            } else if (movie.getYear() > 0 && movie.getYear() <= LocalDate.now().getYear()){
+                movieToUpdate.get().setYear(movie.getYear());
+            } else if (movie.getGenre() != null){
+                movieToUpdate.get().setGenre(movie.getGenre());
+            }
+            movieRepository.save(movieToUpdate.get());
+        }
+    }
+
     public boolean deleteMovie(ObjectId id) {
         if (movieRepository.existsById(id.toString())) {
             movieRepository.deleteById(id.toString());

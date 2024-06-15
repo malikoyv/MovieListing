@@ -62,6 +62,17 @@ public class MovieController {
         }
     }
 
+    @PutMapping("/updateMovie/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Movie> updateMovie(@RequestBody Movie movie, @PathVariable("id") ObjectId id) {
+        Optional<Movie> movieOptional = movieService.getById(id);
+        if (movieOptional.isPresent()) {
+            movieService.updateMovie(id, movie);
+            return new ResponseEntity<>(movieOptional.get(), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     @DeleteMapping("/deleteMovie/{id}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Movie> deleteMovie(@PathVariable ObjectId id) {

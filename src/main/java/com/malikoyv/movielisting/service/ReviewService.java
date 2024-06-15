@@ -1,9 +1,9 @@
 package com.malikoyv.movielisting.service;
 
+import com.malikoyv.movielisting.model.Movie;
 import com.malikoyv.movielisting.model.Review;
 import com.malikoyv.movielisting.repos.MovieRepository;
 import com.malikoyv.movielisting.repos.ReviewRepository;
-import com.malikoyv.movielisting.repos.UserRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,13 +17,15 @@ public class ReviewService {
     private ReviewRepository reviewRepository;
     @Autowired
     private MovieRepository movieRepository;
-    @Autowired
-    private UserRepository userRepository;
 
     public Review addReview(Review review) {
         Optional<Review> existingReview = reviewRepository.findByAuthorIdAndMovieId(review.getAuthorId(), review.getMovieId());
+        Optional<Movie> movie = movieRepository.findById(review.getMovieId().toString());
         if (movieRepository.existsById(review.getMovieId().toString())
-                && review.getRating() > 0 && review.getRating() <= 10 && existingReview.isEmpty()){
+                && review.getRating() > 0 && review.getRating() <= 10 && existingReview.isEmpty()
+                && movie.isPresent()){
+            movie.get().getReviewIds().add(review.get_id());
+            movieRepository.save(movie.get());
             return reviewRepository.save(review);
         }
         return null;
