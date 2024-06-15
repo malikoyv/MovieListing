@@ -1,7 +1,5 @@
 package com.malikoyv.movielisting.service;
 
-import com.malikoyv.movielisting.model.ERole;
-import com.malikoyv.movielisting.model.Role;
 import com.malikoyv.movielisting.model.User;
 import com.malikoyv.movielisting.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,7 +33,6 @@ public class UserService {
     public User addUser(User user) {
         if (isUserValid(user)) {
             user.setPassword(user.getPassword());
-            user.setRoles(Set.of(new Role(ERole.USER)));
             return userRepository.save(user);
         }
         return null;
