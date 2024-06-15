@@ -19,4 +19,8 @@ public class Watchlist {
     private ObjectId id;
     private ObjectId userId;
     private Set<ObjectId> movieId = new HashSet<>();
+
+    public Watchlist(ObjectId movieId) {
+        this.movieId.add(movieId);
+    }
 }

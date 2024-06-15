@@ -9,10 +9,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class WatchlistService {
@@ -53,12 +50,21 @@ public class WatchlistService {
         return null;
     }
 
-    public boolean deleteMovie(ObjectId id) {
+    public boolean deleteWatchlist(ObjectId id) {
         Optional<Watchlist> watchlist = watchlistRepository.findById(id.toString());
         if (watchlist.isPresent()){
             watchlistRepository.delete(watchlist.get());
             return true;
         }
         return false;
+    }
+
+    public Watchlist deleteMovieFromWatchlist(ObjectId movieId, ObjectId watchlistId) {
+        Watchlist watchlist = watchlistRepository.findById(watchlistId.toString()).orElse(null);
+        if (watchlist == null) {
+            return watchlist;
+        }
+        watchlist.getMovieId().remove(movieId);
+        return watchlistRepository.save(watchlist);
     }
 }
