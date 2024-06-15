@@ -19,11 +19,12 @@ public class ReviewService {
     private MovieRepository movieRepository;
 
     public Review addReview(Review review) {
+        review.set_id(new ObjectId());
         Optional<Review> existingReview = reviewRepository.findByAuthorIdAndMovieId(review.getAuthorId(), review.getMovieId());
         Optional<Movie> movie = movieRepository.findById(review.getMovieId().toString());
         if (movieRepository.existsById(review.getMovieId().toString())
                 && review.getRating() > 0 && review.getRating() <= 10 && existingReview.isEmpty()
-                && movie.isPresent()){
+                && movie.isPresent()) {
             movie.get().getReviewIds().add(review.get_id());
             movieRepository.save(movie.get());
             return reviewRepository.save(review);
@@ -49,7 +50,9 @@ public class ReviewService {
     }
 
     public boolean deleteReview(ObjectId id){
-        if (reviewRepository.existsById(id.toString())){
+        Review review = reviewRepository.findById(id.toString()).orElse(null);
+        if (review != null){
+            movieRepository.findById(review.getMovieId().toString()).ifPresent(movie -> movie.getReviewIds().remove(id));
             reviewRepository.deleteById(id.toString());
             return true;
         }

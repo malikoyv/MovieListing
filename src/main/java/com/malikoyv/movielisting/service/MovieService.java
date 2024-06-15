@@ -33,6 +33,7 @@ public class MovieService {
 
     public Movie addMovie(Movie movie) {
         if (isMovieValid(movie)){
+            movie.setReviewIds(List.of());
             return movieRepository.save(movie);
         }
         return null;
