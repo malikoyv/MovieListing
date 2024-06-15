@@ -19,4 +19,8 @@ public class Watchhistory {
     private ObjectId movieId;
     private ObjectId userId;
     private Date watchedAt;
+
+    public Watchhistory(ObjectId userId) {
+        this.userId = userId;
+    }
 }
