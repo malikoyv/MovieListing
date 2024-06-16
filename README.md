@@ -15,9 +15,9 @@ This is a Movie Listing Application built using Spring Boot, MongoDB, Spring Sec
 - Maven
 - Mockito
 ## Prerequisites
-Java 11 or higher
-Maven 3.6.0 or higher
-MongoDB 4.0 or higher
+- Java 11 or higher
+- Maven 3.6.0 or higher
+- MongoDB 4.0 or higher
 ## Getting Started
 ### Clone the repository:
 ```
@@ -111,3 +111,54 @@ Send API requests using Postman. Authorize before each request, where it is need
 <img src="https://github.com/malikoyv/MovieListing/assets/124885789/cce4ca2b-bf35-4357-bffb-5596c1f6c002" height=50px>
 
 ### Watchlist
+#### Get All Watchlists
+<img src="https://github.com/malikoyv/MovieListing/assets/124885789/ff8aabd9-d963-4148-9790-1458049ed563" height=50px>
+
+#### Get Movies From a Watchlist
+<img src="https://github.com/malikoyv/MovieListing/assets/124885789/e1fa113c-bc7b-4950-bbf9-b138e7208e46" height=50px>
+
+#### Create a Watchlist
+<img src="https://github.com/malikoyv/MovieListing/assets/124885789/3f18e178-95ec-4386-9a21-cf0761e5a77e" height=200px>
+
+#### Add a Movie to a Watchlist
+<img src="https://github.com/malikoyv/MovieListing/assets/124885789/82e0e12c-9b88-476c-84c1-7c2fb8308dcf" height=50px>
+
+#### Delete a Movie from a Watchlist
+<img src="https://github.com/malikoyv/MovieListing/assets/124885789/26b82fe1-c056-424b-813e-b722ae73b59e" height=50px>
+
+#### Delete a Watchlist
+<img src="https://github.com/malikoyv/MovieListing/assets/124885789/887cfd42-a3dd-4678-aae9-02bdb6fbe00a" height=50px>
+
+### Watch history
+#### Get a Watch history By User ID
+<img src="https://github.com/malikoyv/MovieListing/assets/124885789/493224be-13ca-4b9a-854b-a9f7b7f15c73" height=50px>
+
+#### Add a Watch history
+<img src="https://github.com/malikoyv/MovieListing/assets/124885789/23debd87-12e6-4cf1-b8fd-ec47447519fc" height=200px>
+
+### Recommendations
+#### Get Recommendations By User ID
+<img src="https://github.com/malikoyv/MovieListing/assets/124885789/2b915552-ae31-43bc-9d21-04fd8f3bffd1" height=50px>
+
+## Running Tests
+To run the unit tests for the application, use the following command:
+```
+mvn test
+```
+Unit tests are included for the controllers and services to ensure the correctness of the application logic.
+
+## Contribution
+I would be glad if you contribute to my project! Follow these steps to contribute:
+
+- Fork the repository.
+- Create a new branch (git checkout -b feature-branch).
+- Make your changes.
+- Commit your changes (git commit -m 'Add some feature').
+- Push to the branch (git push origin feature-branch).
+- Create a new Pull Request.
+Thank you for your contributions!
+
+## License
+This project is licensed under the GNU Public Licence - see the [LICENSE](https://github.com/malikoyv/MovieListing/blob/main/LICENSE) file for details.
+
+### Thank you for using and contributing to the Movie Listing Application!
