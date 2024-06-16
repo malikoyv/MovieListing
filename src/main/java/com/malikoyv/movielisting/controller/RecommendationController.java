@@ -6,6 +6,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +18,7 @@ public class RecommendationController {
     private RecommendationService recommendationService;
 
     @GetMapping("/getRecommendation/{userId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Movie>> getRecommendations(@PathVariable("userId") ObjectId id) {
         List<Movie> recommendations = recommendationService.recommendMovies(id);
         if (recommendations.isEmpty()) {

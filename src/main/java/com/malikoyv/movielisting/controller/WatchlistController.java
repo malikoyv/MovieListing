@@ -3,7 +3,6 @@ package com.malikoyv.movielisting.controller;
 import com.malikoyv.movielisting.model.Movie;
 import com.malikoyv.movielisting.model.Watchlist;
 import com.malikoyv.movielisting.service.WatchlistService;
-import org.apache.coyote.Response;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -70,7 +69,7 @@ public class WatchlistController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @DeleteMapping("/deleteMovieFromWatchlist/{movieId}/{watchlistId}")
+    @DeleteMapping("/deleteMovie/{movieId}/{watchlistId}")
     @PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     public ResponseEntity<Watchlist> deleteMovie(@PathVariable("movieId") ObjectId movieId, @PathVariable("watchlistId") ObjectId watchlistId) {
         Watchlist watchlist = watchlistService.deleteMovieFromWatchlist(movieId, watchlistId);
