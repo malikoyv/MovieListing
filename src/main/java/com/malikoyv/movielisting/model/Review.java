@@ -19,6 +19,13 @@ public class Review {
     private double rating;
     private String description;
 
+    public Review(ObjectId _id, ObjectId movieId, ObjectId authorId, double rating){
+        this._id = _id;
+        this.movieId = movieId;
+        this.authorId = authorId;
+        this.rating = rating;
+    }
+
     public Review(ObjectId movieId){
         this.movieId = movieId;
     }
