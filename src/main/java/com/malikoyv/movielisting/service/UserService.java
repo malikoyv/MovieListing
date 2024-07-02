@@ -32,7 +32,6 @@ public class UserService {
 
     public User addUser(User user) {
         if (isUserValid(user)) {
-            user.setPassword(user.getPassword());
             return userRepository.save(user);
         }
         return null;
@@ -71,13 +70,20 @@ public class UserService {
     }
 
     public boolean isUserValid(User user) {
-        boolean uniqueUsername = userRepository.findByUsername(user.getUsername()).isEmpty();
+        if (user == null || user.getUsername() == null || user.getEmail() == null || user.getPassword() == null) {
+            return false;
+        }
+        boolean existingUser = userRepository.existsById(user.getUsername());
         return !user.getUsername().isEmpty()
                 && isEmailValid(user.getEmail())
-                && uniqueUsername && user.getPassword().length() > 5;
+                && !existingUser
+                && user.getPassword().length() > 5;
     }
 
     private boolean isEmailValid(String email) {
+        if (email == null || email.isEmpty()) {
+            return false;
+        }
         String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
         Pattern p = Pattern.compile(ePattern);
         Matcher m = p.matcher(email);
