@@ -39,13 +39,6 @@ public class MovieService {
         return null;
     }
 
-    private boolean isMovieValid(Movie movie) {
-        return !movie.getName().isEmpty() &&
-                !movie.getDirector().isEmpty() &&
-                movie.getYear() > 1895 && movie.getYear() < LocalDate.now().getYear() &&
-                !movie.getGenre().isEmpty();
-    }
-
     public void updateMovie(ObjectId id, Movie movie) {
         Optional<Movie> movieToUpdate = movieRepository.findById(id.toString());
         if (movieToUpdate.isPresent()){
@@ -68,5 +61,16 @@ public class MovieService {
             return true;
         }
         return false;
+    }
+
+    private boolean isMovieValid(Movie movie) {
+        String movieName = movie.getName();
+        String movieDirector = movie.getDirector();
+        List<String> movieGenre = movie.getGenre();
+
+        return movieName != null && !movieName.isEmpty() &&
+                movieDirector != null && !movieDirector.isEmpty() &&
+                movie.getYear() > 1895 && movie.getYear() < LocalDate.now().getYear() &&
+                movieGenre != null && !movieGenre.isEmpty();
     }
 }
