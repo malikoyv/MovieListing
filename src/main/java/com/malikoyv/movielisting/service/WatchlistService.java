@@ -1,6 +1,5 @@
 package com.malikoyv.movielisting.service;
 
-import com.malikoyv.movielisting.controller.WatchlistController;
 import com.malikoyv.movielisting.model.Movie;
 import com.malikoyv.movielisting.model.Watchlist;
 import com.malikoyv.movielisting.repos.MovieRepository;

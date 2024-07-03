@@ -5,14 +5,11 @@ import com.malikoyv.movielisting.model.Movie;
 import com.malikoyv.movielisting.model.Watchlist;
 import com.malikoyv.movielisting.repos.MovieRepository;
 import com.malikoyv.movielisting.service.WatchlistService;
-import org.apache.coyote.Response;
 import org.bson.types.ObjectId;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.ssl.SslProperties;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
@@ -78,8 +75,6 @@ public class WatchlistControllerTest {
 
     @Test
     void getAll_failed() {
-        List<Watchlist> watchlists = new ArrayList<>();
-
         when(service.getAllWatchlists()).thenReturn(null);
         ResponseEntity<List<Watchlist>> response = controller.getAllWatchlists();
 

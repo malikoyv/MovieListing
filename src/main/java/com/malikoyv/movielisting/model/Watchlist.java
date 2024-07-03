@@ -23,4 +23,9 @@ public class Watchlist {
     public Watchlist(ObjectId movieId) {
         this.movieId.add(movieId);
     }
+
+    public Watchlist(ObjectId id, Set<ObjectId> movieIds){
+        this.id = id;
+        this.movieId.addAll(movieIds);
+    }
 }
